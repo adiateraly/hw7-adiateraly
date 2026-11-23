@@ -1,0 +1,11 @@
+| training_seed | policy | evaluation_seed | wins | losses | draws | cutoffs | mean_reward |
+|---|---|---|---|---|---|---|---|
+| 11 | baseline hit-below-20 | 1011 | 2962 | 6462 | 576 | 0 | -0.3500 |
+| 11 | Q-learning, eps=0 | 1011 | 4102 | 4900 | 998 | 0 | -0.0798 |
+| 11 | Q-learning, eps=0.2 | 1011 | 4204 | 4894 | 902 | 0 | -0.0690 |
+| 22 | baseline hit-below-20 | 1022 | 2935 | 6481 | 584 | 0 | -0.3546 |
+| 22 | Q-learning, eps=0 | 1022 | 4161 | 4909 | 930 | 0 | -0.0748 |
+| 22 | Q-learning, eps=0.2 | 1022 | 4209 | 4847 | 944 | 0 | -0.0638 |
+| 33 | baseline hit-below-20 | 1033 | 2950 | 6496 | 554 | 0 | -0.3546 |
+| 33 | Q-learning, eps=0 | 1033 | 4227 | 4877 | 896 | 0 | -0.0650 |
+| 33 | Q-learning, eps=0.2 | 1033 | 4178 | 4941 | 881 | 0 | -0.0763 |

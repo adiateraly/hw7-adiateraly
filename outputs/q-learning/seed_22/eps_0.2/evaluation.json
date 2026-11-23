@@ -1,0 +1,20 @@
+{
+  "train_seed": 22,
+  "epsilon": 0.2,
+  "eval_seed": 1022,
+  "train_cutoffs": [],
+  "learned": {
+    "wins": 4209,
+    "losses": 4847,
+    "draws": 944,
+    "cutoffs": 0,
+    "mean_reward": -0.0638
+  },
+  "baseline": {
+    "wins": 2935,
+    "losses": 6481,
+    "draws": 584,
+    "cutoffs": 0,
+    "mean_reward": -0.3546
+  }
+}
