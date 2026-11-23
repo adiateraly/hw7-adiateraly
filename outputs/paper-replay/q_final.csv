@@ -1,0 +1,6 @@
+state,Q_stick,Q_hit,greedy
+A,0.0,-0.13922,stick
+B,-0.018100000000000005,0.0,hit
+C,0.0,0.0,tie
+D,0.0,0.0,tie
+E,0.0,0.0,tie

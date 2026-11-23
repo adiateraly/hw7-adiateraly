@@ -1,0 +1,133 @@
+alpha=0.1  gamma=1.0  policy: hit below 20, stick at 20/21
+policy on A-E: {'A': 'hit', 'B': 'stick', 'C': 'hit', 'D': 'hit', 'E': 'stick'}
+
+=== 1. MODEL-BASED ===
+N(A,hit) = 3
+N(B,stick) = 2
+N(C,hit) = 1
+N(D,hit) = 1
+N(E,stick) = 1
+T(A,hit,B) = 2/3 = 0.666667   R = +0/2 = 0.000000
+T(A,hit,END) = 1/3 = 0.333333   R = -1/1 = -1.000000
+T(B,stick,END) = 2/2 = 1.000000   R = +0/2 = 0.000000
+T(C,hit,D) = 1/1 = 1.000000   R = +0/1 = 0.000000
+T(D,hit,E) = 1/1 = 1.000000   R = +0/1 = 0.000000
+T(E,stick,END) = 1/1 = 1.000000   R = +0/1 = 0.000000
+Unobserved (state, policy action) pairs:  none
+V1: A=-0.333333  B=0.000000  C=0.000000  D=0.000000  E=0.000000
+V2: A=-0.333333  B=0.000000  C=0.000000  D=0.000000  E=0.000000
+
+=== 2. MONTE CARLO (every visit, one pass) ===
+game 1: visit A  return +1
+game 1: visit B  return +1
+game 2: visit A  return -1
+game 3: visit C  return +0
+game 3: visit D  return +0
+game 3: visit E  return +0
+game 4: visit A  return -1
+game 4: visit B  return -1
+A: returns [1, -1, -1]  count 3  average -0.333333
+B: returns [1, -1]  count 2  average 0.000000
+C: returns [0]  count 1  average 0.000000
+D: returns [0]  count 1  average 0.000000
+E: returns [0]  count 1  average 0.000000
+
+=== 3. TD(0)  V_new = V + 0.1 (r + V' - V) ===
+-- pass 1
+g1 s1: V(A) old=0.000000  r=+0  V'(B)=0.000000  target=0.000000  new=0.000000
+g1 s2: V(B) old=0.000000  r=+1  V'(END)=0.000000  target=1.000000  new=0.100000
+g2 s1: V(A) old=0.000000  r=-1  V'(END)=0.000000  target=-1.000000  new=-0.100000
+g3 s1: V(C) old=0.000000  r=+0  V'(D)=0.000000  target=0.000000  new=0.000000
+g3 s2: V(D) old=0.000000  r=+0  V'(E)=0.000000  target=0.000000  new=0.000000
+g3 s3: V(E) old=0.000000  r=+0  V'(END)=0.000000  target=0.000000  new=0.000000
+g4 s1: V(A) old=-0.100000  r=+0  V'(B)=0.100000  target=0.100000  new=-0.080000
+g4 s2: V(B) old=0.100000  r=-1  V'(END)=0.000000  target=-1.000000  new=-0.010000
+-- pass 2
+g1 s1: V(A) old=-0.080000  r=+0  V'(B)=-0.010000  target=-0.010000  new=-0.073000
+g1 s2: V(B) old=-0.010000  r=+1  V'(END)=0.000000  target=1.000000  new=0.091000
+g2 s1: V(A) old=-0.073000  r=-1  V'(END)=0.000000  target=-1.000000  new=-0.165700
+g3 s1: V(C) old=0.000000  r=+0  V'(D)=0.000000  target=0.000000  new=0.000000
+g3 s2: V(D) old=0.000000  r=+0  V'(E)=0.000000  target=0.000000  new=0.000000
+g3 s3: V(E) old=0.000000  r=+0  V'(END)=0.000000  target=0.000000  new=0.000000
+g4 s1: V(A) old=-0.165700  r=+0  V'(B)=0.091000  target=0.091000  new=-0.140030
+g4 s2: V(B) old=0.091000  r=-1  V'(END)=0.000000  target=-1.000000  new=-0.018100
+Final V: A=-0.140030  B=-0.018100  C=0.000000  D=0.000000  E=0.000000
+
+=== 4. Q-LEARNING  Q_new = Q + 0.1 (r + max Q' - Q), max over hit AND stick ===
+-- pass 1
+g1 s1: Q(A,hit) old=0.000000  r=+0  max Q'(B)=0.000000  target=0.000000  new=0.000000
+g1 s2: Q(B,stick) old=0.000000  r=+1  max Q'(END)=0.000000  target=1.000000  new=0.100000
+g2 s1: Q(A,hit) old=0.000000  r=-1  max Q'(END)=0.000000  target=-1.000000  new=-0.100000
+g3 s1: Q(C,hit) old=0.000000  r=+0  max Q'(D)=0.000000  target=0.000000  new=0.000000
+g3 s2: Q(D,hit) old=0.000000  r=+0  max Q'(E)=0.000000  target=0.000000  new=0.000000
+g3 s3: Q(E,stick) old=0.000000  r=+0  max Q'(END)=0.000000  target=0.000000  new=0.000000
+g4 s1: Q(A,hit) old=-0.100000  r=+0  max Q'(B)=0.100000  target=0.100000  new=-0.080000
+g4 s2: Q(B,stick) old=0.100000  r=-1  max Q'(END)=0.000000  target=-1.000000  new=-0.010000
+-- pass 2
+g1 s1: Q(A,hit) old=-0.080000  r=+0  max Q'(B)=0.000000  target=0.000000  new=-0.072000
+g1 s2: Q(B,stick) old=-0.010000  r=+1  max Q'(END)=0.000000  target=1.000000  new=0.091000
+g2 s1: Q(A,hit) old=-0.072000  r=-1  max Q'(END)=0.000000  target=-1.000000  new=-0.164800
+g3 s1: Q(C,hit) old=0.000000  r=+0  max Q'(D)=0.000000  target=0.000000  new=0.000000
+g3 s2: Q(D,hit) old=0.000000  r=+0  max Q'(E)=0.000000  target=0.000000  new=0.000000
+g3 s3: Q(E,stick) old=0.000000  r=+0  max Q'(END)=0.000000  target=0.000000  new=0.000000
+g4 s1: Q(A,hit) old=-0.164800  r=+0  max Q'(B)=0.091000  target=0.091000  new=-0.139220
+g4 s2: Q(B,stick) old=0.091000  r=-1  max Q'(END)=0.000000  target=-1.000000  new=-0.018100
+Final Q and greedy action:
+A: Q(stick)=0.000000  Q(hit)=-0.139220  greedy=stick
+B: Q(stick)=-0.018100  Q(hit)=0.000000  greedy=hit
+C: Q(stick)=0.000000  Q(hit)=0.000000  greedy=tie
+D: Q(stick)=0.000000  Q(hit)=0.000000  greedy=tie
+E: Q(stick)=0.000000  Q(hit)=0.000000  greedy=tie
+
+=== PAPER vs PROGRAM ===
+model-based | N(A,hit) | counts | 3 | 3.0 | 0 | match
+model-based | N(B,stick) | counts | 2 | 2.0 | 0 | match
+model-based | T(A,hit,B) | model | 2/3 | 0.6666666666666666 | 0 | match
+model-based | R(A,hit,B) | model | 0 | 0.0 | 0 | match
+model-based | T(A,hit,END) | model | 1/3 | 0.3333333333333333 | 0 | match
+model-based | R(A,hit,END) | model | -1 | -1.0 | 0 | match
+model-based | T(B,stick,END) | model | 1 | 1.0 | 0 | match
+model-based | R(B,stick,END) | model | 0 | 0.0 | 0 | match
+model-based | V(A) | sweep 1 | -1/3 | -0.3333333333333333 | 0 | match
+model-based | V(B) | sweep 1 | 0 | 0.0 | 0 | match
+model-based | V(C) | sweep 1 | 0 | 0.0 | 0 | match
+model-based | V(D) | sweep 1 | 0 | 0.0 | 0 | match
+model-based | V(E) | sweep 1 | 0 | 0.0 | 0 | match
+model-based | V(A) | sweep 2 | -1/3 | -0.3333333333333333 | 0 | match
+model-based | V(B) | sweep 2 | 0 | 0.0 | 0 | match
+model-based | V(C) | sweep 2 | 0 | 0.0 | 0 | match
+model-based | V(D) | sweep 2 | 0 | 0.0 | 0 | match
+model-based | V(E) | sweep 2 | 0 | 0.0 | 0 | match
+monte-carlo | average(A) | one pass | -1/3 | -0.3333333333333333 | 0 | match
+monte-carlo | count(A) | one pass | 3 | 3.0 | 0 | match
+monte-carlo | average(B) | one pass | 0 | 0.0 | 0 | match
+monte-carlo | count(B) | one pass | 2 | 2.0 | 0 | match
+monte-carlo | average(C) | one pass | 0 | 0.0 | 0 | match
+monte-carlo | count(C) | one pass | 1 | 1.0 | 0 | match
+monte-carlo | average(D) | one pass | 0 | 0.0 | 0 | match
+monte-carlo | count(D) | one pass | 1 | 1.0 | 0 | match
+monte-carlo | average(E) | one pass | 0 | 0.0 | 0 | match
+monte-carlo | count(E) | one pass | 1 | 1.0 | 0 | match
+td0 | V(B) | pass 1 game 1 step 2 | 0.1 | 0.1 | 0 | match
+td0 | V(A) | pass 1 game 2 step 1 | -0.1 | -0.1 | 0 | match
+td0 | V(A) | pass 1 game 4 step 1 | -0.08 | -0.08 | 0 | match
+td0 | V(B) | pass 1 game 4 step 2 | -0.01 | -0.010000000000000009 | 0 | match
+td0 | V(A) | pass 2 game 1 step 1 | -0.073 | -0.07300000000000001 | 0 | match
+td0 | V(B) | pass 2 game 1 step 2 | 0.091 | 0.091 | 0 | match
+td0 | V(A) | pass 2 game 2 step 1 | -0.1657 | -0.16570000000000001 | 0 | match
+td0 | V(A) | pass 2 game 4 step 1 | -0.14003 | -0.14003000000000002 | 0 | match
+td0 | V(B) | pass 2 game 4 step 2 | -0.0181 | -0.018100000000000005 | 0 | match
+td0 | V(C) | final | 0 | 0.0 | 0 | match
+td0 | V(D) | final | 0 | 0.0 | 0 | match
+td0 | V(E) | final | 0 | 0.0 | 0 | match
+q-learning | Q(B,stick) | pass 1 game 1 step 2 | 0.1 | 0.1 | 0 | match
+q-learning | Q(A,hit) | pass 1 game 2 step 1 | -0.1 | -0.1 | 0 | match
+q-learning | Q(A,hit) | pass 1 game 4 step 1 | -0.08 | -0.08 | 0 | match
+q-learning | Q(B,stick) | pass 1 game 4 step 2 | -0.01 | -0.010000000000000009 | 0 | match
+q-learning | Q(A,hit) | pass 2 game 1 step 1 | -0.072 | -0.07200000000000001 | 0 | match
+q-learning | Q(B,stick) | pass 2 game 1 step 2 | 0.091 | 0.091 | 0 | match
+q-learning | Q(A,hit) | pass 2 game 2 step 1 | -0.1648 | -0.1648 | 0 | match
+q-learning | Q(A,hit) | pass 2 game 4 step 1 | -0.13922 | -0.13922 | 0 | match
+q-learning | Q(B,stick) | pass 2 game 4 step 2 | -0.0181 | -0.018100000000000005 | 0 | match
+
+49/49 entries match; 0 differ.

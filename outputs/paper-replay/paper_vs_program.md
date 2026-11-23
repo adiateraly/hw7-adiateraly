@@ -1,0 +1,51 @@
+| method | state / state-action | sweep / pass / update | paper | program | difference | status |
+|---|---|---|---|---|---|---|
+| model-based | N(A,hit) | counts | 3 | 3.0 | 0 | match |
+| model-based | N(B,stick) | counts | 2 | 2.0 | 0 | match |
+| model-based | T(A,hit,B) | model | 2/3 | 0.6666666666666666 | 0 | match |
+| model-based | R(A,hit,B) | model | 0 | 0.0 | 0 | match |
+| model-based | T(A,hit,END) | model | 1/3 | 0.3333333333333333 | 0 | match |
+| model-based | R(A,hit,END) | model | -1 | -1.0 | 0 | match |
+| model-based | T(B,stick,END) | model | 1 | 1.0 | 0 | match |
+| model-based | R(B,stick,END) | model | 0 | 0.0 | 0 | match |
+| model-based | V(A) | sweep 1 | -1/3 | -0.3333333333333333 | 0 | match |
+| model-based | V(B) | sweep 1 | 0 | 0.0 | 0 | match |
+| model-based | V(C) | sweep 1 | 0 | 0.0 | 0 | match |
+| model-based | V(D) | sweep 1 | 0 | 0.0 | 0 | match |
+| model-based | V(E) | sweep 1 | 0 | 0.0 | 0 | match |
+| model-based | V(A) | sweep 2 | -1/3 | -0.3333333333333333 | 0 | match |
+| model-based | V(B) | sweep 2 | 0 | 0.0 | 0 | match |
+| model-based | V(C) | sweep 2 | 0 | 0.0 | 0 | match |
+| model-based | V(D) | sweep 2 | 0 | 0.0 | 0 | match |
+| model-based | V(E) | sweep 2 | 0 | 0.0 | 0 | match |
+| monte-carlo | average(A) | one pass | -1/3 | -0.3333333333333333 | 0 | match |
+| monte-carlo | count(A) | one pass | 3 | 3.0 | 0 | match |
+| monte-carlo | average(B) | one pass | 0 | 0.0 | 0 | match |
+| monte-carlo | count(B) | one pass | 2 | 2.0 | 0 | match |
+| monte-carlo | average(C) | one pass | 0 | 0.0 | 0 | match |
+| monte-carlo | count(C) | one pass | 1 | 1.0 | 0 | match |
+| monte-carlo | average(D) | one pass | 0 | 0.0 | 0 | match |
+| monte-carlo | count(D) | one pass | 1 | 1.0 | 0 | match |
+| monte-carlo | average(E) | one pass | 0 | 0.0 | 0 | match |
+| monte-carlo | count(E) | one pass | 1 | 1.0 | 0 | match |
+| td0 | V(B) | pass 1 game 1 step 2 | 0.1 | 0.1 | 0 | match |
+| td0 | V(A) | pass 1 game 2 step 1 | -0.1 | -0.1 | 0 | match |
+| td0 | V(A) | pass 1 game 4 step 1 | -0.08 | -0.08 | 0 | match |
+| td0 | V(B) | pass 1 game 4 step 2 | -0.01 | -0.010000000000000009 | 0 | match |
+| td0 | V(A) | pass 2 game 1 step 1 | -0.073 | -0.07300000000000001 | 0 | match |
+| td0 | V(B) | pass 2 game 1 step 2 | 0.091 | 0.091 | 0 | match |
+| td0 | V(A) | pass 2 game 2 step 1 | -0.1657 | -0.16570000000000001 | 0 | match |
+| td0 | V(A) | pass 2 game 4 step 1 | -0.14003 | -0.14003000000000002 | 0 | match |
+| td0 | V(B) | pass 2 game 4 step 2 | -0.0181 | -0.018100000000000005 | 0 | match |
+| td0 | V(C) | final | 0 | 0.0 | 0 | match |
+| td0 | V(D) | final | 0 | 0.0 | 0 | match |
+| td0 | V(E) | final | 0 | 0.0 | 0 | match |
+| q-learning | Q(B,stick) | pass 1 game 1 step 2 | 0.1 | 0.1 | 0 | match |
+| q-learning | Q(A,hit) | pass 1 game 2 step 1 | -0.1 | -0.1 | 0 | match |
+| q-learning | Q(A,hit) | pass 1 game 4 step 1 | -0.08 | -0.08 | 0 | match |
+| q-learning | Q(B,stick) | pass 1 game 4 step 2 | -0.01 | -0.010000000000000009 | 0 | match |
+| q-learning | Q(A,hit) | pass 2 game 1 step 1 | -0.072 | -0.07200000000000001 | 0 | match |
+| q-learning | Q(B,stick) | pass 2 game 1 step 2 | 0.091 | 0.091 | 0 | match |
+| q-learning | Q(A,hit) | pass 2 game 2 step 1 | -0.1648 | -0.1648 | 0 | match |
+| q-learning | Q(A,hit) | pass 2 game 4 step 1 | -0.13922 | -0.13922 | 0 | match |
+| q-learning | Q(B,stick) | pass 2 game 4 step 2 | -0.0181 | -0.018100000000000005 | 0 | match |

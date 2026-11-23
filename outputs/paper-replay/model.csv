@@ -1,0 +1,12 @@
+kind,state,action,next_state,value1,value2
+N,A,hit,,3,
+N,B,stick,,2,
+N,C,hit,,1,
+N,D,hit,,1,
+N,E,stick,,1,
+"T,R",A,hit,B,0.6666666666666666,0.0
+"T,R",A,hit,END,0.3333333333333333,-1.0
+"T,R",B,stick,END,1.0,0.0
+"T,R",C,hit,D,1.0,0.0
+"T,R",D,hit,E,1.0,0.0
+"T,R",E,stick,END,1.0,0.0
